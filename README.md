@@ -1,3 +1,7 @@
+### Clonez le dépôt sur votre ordinateur local :
+
+git clone
+
 ### Accéder au répertoire du projet :
 
 cd Linguaphrase
