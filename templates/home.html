@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Maîtrisez l'anglais en pratiquant les phrases!</h1>
+
+<div class="card text-white bg-primary mb-3" style="max-width: 100%;">
+    <div class="card-header">Découvrez LinguaPhrase</div>
+    <div class="card-body">
+        <p class="card-text">
+            LinguaPhrase est l'application qui révolutionne l'apprentissage de l'anglais en le rendant interactif et amusant. Explorez nos cours thématiques, enrichissez votre vocabulaire et perfectionnez votre grammaire, le tout au même endroit.
+        </p>
+        <ul class="card-text">
+            <li>Apprenez par catégories : Organisé par thèmes, notre vocabulaire est facile à mémoriser grâce à des images et des exemples de phrases.</li>
+            <li>Pratiquez la construction de phrases : Utilisez les mots que vous avez appris pour créer des phrases complètes dans des contextes réels.</li>
+        </ul>
+        <p class="card-text">
+            Aujourd'hui, commencez votre voyage vers la maîtrise de l'anglais. Améliorez vos compétences linguistiques de manière interactive !
+        </p>
+        <a href="{% url 'cours' %}" class="btn btn-secondary">Entrer dans les cours</a>
+        <a href="{% url 'exercise' %}" class="btn btn-secondary">Entrer dans les exercices</a>
+    </div>
+</div>
+<style>
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin-top: 20px; /* 调整上边距 */
+    margin-bottom: 20px; /* 调整下边距 */
+    font-size: 36px; /* 调整字体大小 */
+    line-height: 1.2; /* 调整行高 */
+}
+
+
+.card-text, p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+  </style>
+{% endblock %}
+

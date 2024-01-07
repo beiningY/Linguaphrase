@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  body {
+    text-align: center; /* Center everything */
+  }
+
+  .word {
+    display: none; /* Initially hide all words */
+    margin: 20px auto; /* Add some space around each word */
+    width: 30%; /* Set a max-width for content and center it */
+  }
+
+  img {
+    max-width: 100%; /* Ensure images are not larger than their container */
+    height: auto; /* Maintain aspect ratio */
+    margin-top: 20px; /* Add some space above the image */
+  }
+
+  .navigation {
+    margin-top: 20px; /* Add some space above the navigation */
+  }
+
+  .navigation button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .navigation button:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+  }
+</style>
+
+<h1>{{ theme|capfirst }}</h1>
+{% for word in words %}
+  <div class="word">
+    <h2>{{ word.word }}</h2>
+    <p><strong>Définition:</strong> {{ word.definition }}</p>
+    <p><strong>Example:</strong> {{ word.example }}</p>
+    {% if word.image_url %}
+      <img src="{{ word.image_url }}" alt="{{ word.word }}">
+    {% endif %}
+  </div>
+{% endfor %}
+
+<div class="navigation">
+  <button onclick="previousWord()">Previous</button>
+  <button onclick="nextWord()">Next</button>
+</div>
+
+<script>
+  let currentWord = 0;
+  const words = document.querySelectorAll('.word');
+  // Initially display the first word
+  if(words.length > 0) {
+    words[0].style.display = 'block';
+  }
+
+  function nextWord() {
+    if (currentWord < words.length - 1) {
+      words[currentWord].style.display = 'none';
+      currentWord++;
+      words[currentWord].style.display = 'block';
+    }
+  }
+
+  function previousWord() {
+    if (currentWord > 0) {
+      words[currentWord].style.display = 'none';
+      currentWord--;
+      words[currentWord].style.display = 'block';
+    }
+  }
+</script>
+
+{% endblock %}

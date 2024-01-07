@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  .course-modules {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .theme-block {
+    background-color: black;
+    color: white;
+    display: block;
+    width: calc(33% - 20px); 
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box; 
+    transition: background-color 0.3s;
+  }
+
+  .theme-block:hover {
+    background-color: #333; 
+  }
+</style>
+
+<h1>Construction de Phrases</h1>
+<div class="course-modules">
+  {% for theme in themes %}
+    <a class="theme-block" href="{% url 'theme_exer' theme %}">{{ theme|title }}</a>
+  {% endfor %}
+</div>
+{% endblock %}

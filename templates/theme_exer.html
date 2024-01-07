@@ -1,0 +1,259 @@
+<!-- theme_exer.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Basic CSS for the exercise page */
+    .container {
+        width: 80%;
+        margin: auto;
+        text-align: center;
+    }
+
+    .word, .verb {
+        display: none;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f9fa; 
+        color: black;
+        border-radius: 5px;
+        width: 60%; 
+        text-align: left;
+    }
+
+    .word img, .verb img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .help-options button, .navigation button, #userInputSection button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100px; 
+    }
+
+    .help-options button:hover, .navigation button:hover, #userInputSection button:hover {
+        background-color: #333; 
+    }
+
+    #userInputSection input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #feedback {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: black;
+    }
+</style>
+
+<div class="container">
+    <h1>Now, create sentences with the displayed words and verbs!</h1>
+    <div class="left-panel">
+        <p>Conseil:Vous pouvez cliquer sur les indices pour voir les informations sur les mots, mais essayez de créer des phrases sans regarder les indices !</p>
+    </div>
+
+    <div class="right-panel">
+    <div id="progressIndicator" style="margin-bottom: 20px;">
+        <span id="currentProgress">1</span>/<span id="totalProgress">5</span>
+    </div>
+
+    <!-- Words section -->
+    <div id="words">
+        {% for word in selected_words %}
+            <div class="word" id="word-{{ forloop.counter }}">
+                <strong>{{ word.word }}</strong>
+                <div class="help-options">
+                    <button onclick="showDefinition('word', {{ forloop.counter }})">Definition</button>
+                    <button onclick="showExample('word', {{ forloop.counter }})">Example</button>
+                    <button onclick="showImage('word', {{ forloop.counter }})">Image</button>
+                </div>
+                <p class="definition" style="display:none;">{{ word.definition }}</p>
+                <p class="example" style="display:none;">{{ word.example }}</p>
+                <img class="image" src="{{ word.image_url }}" alt="{{ word.word }}" style="display:none;">
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Verbs section -->
+    <div id="verbs">
+        {% for verb in selected_verbs %}
+            <div class="verb" id="verb-{{ forloop.counter }}">
+                <strong>{{ verb.word }}</strong>
+                <div class="help-options">
+                    <button onclick="showDefinition('verb', {{ forloop.counter }})">Definition</button>
+                    <button onclick="showExample('verb', {{ forloop.counter }})">Example</button>
+                    <button onclick="showImage('verb', {{ forloop.counter }})">Image</button>
+                </div>
+                <p class="definition" style="display:none;">{{ verb.definition }}</p>
+                <p class="example" style="display:none;">{{ verb.example }}</p>
+                <img class="image" src="{{ verb.image_url }}" alt="{{ verb.word }}" style="display:none;">
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="navigation">
+        <button onclick="showPrevious()">Previous</button>
+        <button onclick="showNext()">Next</button>
+    </div>
+
+    <div id="userInputSection">
+        <input type="text" id="userSentence" placeholder="Type your sentence here">
+        <button onclick="checkSentence()">Check</button>
+    </div>
+
+    <div id="feedback"></div>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const words = document.querySelectorAll('.word');
+    const verbs = document.querySelectorAll('.verb');
+    let totalExercises = Math.min(words.length, verbs.length, 5); 
+
+    function updateProgressIndicator() {
+        document.getElementById('currentProgress').textContent = currentIndex + 1;
+        document.getElementById('totalProgress').textContent = totalExercises;
+    }
+
+    function toggleDisplay(index, show) {
+        const displayValue = show ? 'block' : 'none';
+        if (index < words.length) words[index].style.display = displayValue;
+        if (index < verbs.length) verbs[index].style.display = displayValue;
+    }
+
+    function showNext() {
+        if (currentIndex < totalExercises - 1) {
+            toggleDisplay(currentIndex, false);
+            currentIndex++;
+            toggleDisplay(currentIndex, true);
+            updateProgressIndicator();
+        }
+        if (currentIndex === totalExercises - 1) {
+            document.querySelector(".navigation button:nth-child(2)").style.display = 'none'; 
+        }
+    }
+
+    function showPrevious() {
+        if (currentIndex > 0) {
+            toggleDisplay(currentIndex, false);
+            currentIndex--;
+            toggleDisplay(currentIndex, true);
+            updateProgressIndicator();
+        }
+        if (currentIndex < totalExercises - 1) {
+            document.querySelector(".navigation button:nth-child(2)").style.display = 'inline-block'; 
+        }
+    }
+
+    function showDefinition(type, index) {
+        hideAllInfo(type, index);
+        document.querySelector(`#${type}-${index} .definition`).style.display = 'block';
+    }
+
+    function showExample(type, index) {
+        hideAllInfo(type, index);
+        document.querySelector(`#${type}-${index} .example`).style.display = 'block';
+    }
+
+    function showImage(type, index) {
+        hideAllInfo(type, index);
+        document.querySelector(`#${type}-${index} .image`).style.display = 'block';
+    }
+
+    function hideAllInfo(type, index) {
+        let infoDiv = document.querySelector(`#${type}-${index}`);
+        infoDiv.querySelector('.definition').style.display = 'none';
+        infoDiv.querySelector('.example').style.display = 'none';
+        infoDiv.querySelector('.image').style.display = 'none';
+    }
+
+    function getWordsText(selector) {
+    return Array.from(document.querySelectorAll(selector))
+        .map(elem => elem.innerText.trim()); 
+}
+
+function checkSentence() {
+    var sentence = document.getElementById('userSentence').value;
+    var csrftoken = getCookie('csrftoken'); 
+
+    var selectedWords = getWordsText(`#word-${currentIndex + 1} strong`); 
+    var selectedVerbs = getWordsText(`#verb-${currentIndex + 1} strong`); 
+
+    var formData = new URLSearchParams();
+    formData.append("sentence", sentence);
+
+    selectedWords.forEach(word => formData.append("nouns[]", word));
+    selectedVerbs.forEach(verb => formData.append("verbs[]", verb));
+
+    console.log("Selected nouns:", selectedWords);
+    console.log("Selected verbs:", selectedVerbs);
+
+    fetch("/check_sentence/", {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "X-CSRFToken": csrftoken
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Received data:", data);
+        var feedbackElement = document.getElementById('feedback');
+        feedbackElement.innerHTML = ''; 
+
+        if(data.message) {
+            feedbackElement.innerHTML = '<p>' + data.message + '</p>';
+        } else if(data.suggestions) {
+            data.suggestions.forEach(function(suggestion) {
+                feedbackElement.innerHTML += '<p>' + suggestion + '</p>';
+            });
+        } else if(data.error) {
+            feedbackElement.innerHTML = '<p>' + data.error + '</p>';
+        } else {
+            feedbackElement.innerHTML = '<p>Unexpected response from the server.</p>';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        var feedbackElement = document.getElementById('feedback');
+        feedbackElement.innerHTML = '<p>An error occurred while processing your sentence.</p>'; // 显示错误信息
+    });
+}
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    if(words.length > 0 && verbs.length > 0) {
+        toggleDisplay(0, true); 
+        updateProgressIndicator();
+    }
+
+</script>
+
+{% endblock %}
