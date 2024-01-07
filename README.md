@@ -1,6 +1,6 @@
 ### Clonez le dépôt sur votre ordinateur local :
 
-git clone
+git clone https://github.com/beiningY/Linguaphrase.git
 
 ### Accéder au répertoire du projet :
 
