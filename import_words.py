@@ -1,13 +1,17 @@
+# Importation des modules nécessaires
 import os
 import django
 import requests
 from bs4 import BeautifulSoup
 
+# Configuration des paramètres Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'monProjet.settings')
 django.setup()
 
+# Importation de la classe Word depuis le module myApp.models
 from myApp.models import Word  
 
+# Exemples de phrase pour le thème color
 color_examples = {
     "black": ["Her cat has black fur.", "The night sky is so dark it's almost black."],
     "blue": ["The clear sky is a beautiful shade of blue.", "He painted his room a bright blue color."],
@@ -23,6 +27,7 @@ color_examples = {
     "yellow": ["Sunflowers are known for their bright yellow petals.", "The school bus is yellow."],
 }
 
+# Verbes pour le thème color avec leur définition, leurs exemples et leur image
 color_verbs_data = {
     "like": {
         "definition": "To have a preference or enjoy something.",
@@ -30,7 +35,6 @@ color_verbs_data = {
                      "She likes the color blue."],
         "image_url": "https://cdn-icons-png.flaticon.com/256/1175/1175578.png",
     },
-    # Add more verbs in a similar format
     "color": {
         "definition": "To add or apply color to something; to give hue, tint, or shade.",
         "examples": ["Children enjoy coloring pictures with crayons.",
@@ -53,6 +57,7 @@ color_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème town
 town_examples = {
     "bank": ["I need to go to the bank to withdraw some cash.", "My mom works at the bank down the street."],
     "church": ["We go to church every Sunday for worship.", "You can pray to God in church."],
@@ -68,6 +73,7 @@ town_examples = {
     "theatre" : ["We're going to the theatre to watch a play.", "The theatre is known for its amazing performances."]
 }
 
+# Verbes pour le thème town avec leur définition, leurs exemples et leur image
 town_verbs_data = {
     "watch": {
         "definition": "To look at or observe attentively, typically for enjoyment or information.",
@@ -75,7 +81,7 @@ town_verbs_data = {
                      "She watches tv shows everyday."],
         "image_url": "https://www.shutterstock.com/image-photo/little-boy-beautiful-young-woman-260nw-101431642.jpg",
     },
-    # Add more verbs in a similar format
+
     "visit": {
         "definition": "To go to a place, such as a town, for a purpose like sightseeing or exploring.",
         "examples": ["Tourists like to visit the historic landmarks in the town.",
@@ -99,6 +105,7 @@ town_verbs_data = {
 
 }
 
+# Exemples de phrase pour le thème kitchen
 kitchen_examples = {
     "cooker": ["I'm using the cooker to make dinner tonight.", "The electric cooker in the kitchen is very efficient."],
     "cup": ["Can you pass me a cup of coffee, please?", "I accidentally dropped my cup, and it broke."],
@@ -114,6 +121,7 @@ kitchen_examples = {
     "teapot" : ["She served tea from the beautiful teapot.", "The teapot is a family heirloom."]
 }
 
+# Verbes pour le thème kitchen avec leur définition, leurs exemples et leur image
 kitchen_verbs_data = {
     "peel": {
         "definition": "To remove the outer skin or covering from fruits, vegetables, or other foods.",
@@ -121,7 +129,7 @@ kitchen_verbs_data = {
                      "She carefully peeled the potatoes before boiling them."],
         "image_url": "https://i.pinimg.com/564x/b3/08/0f/b3080ffc9817f8552ce1c40a506dc793.jpg"
     },
-    # Add more verbs in a similar format
+
     "bake": {
         "definition": "To cook food, especially bread and pastry, by dry heat in an oven.",
         "examples": ["She decided to bake cookies for the school bake sale.",
@@ -144,6 +152,7 @@ kitchen_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème pencase
 pencase_examples = {
     "clips": ["I need some clips to keep these papers together.", "She used colorful clips to organize her notes."],
     "crayons": ["Children enjoy coloring with crayons.", "The box of crayons had all the colors of the rainbow."],
@@ -159,6 +168,7 @@ pencase_examples = {
     "tape" : ["Can you hand me the tape to wrap this gift?", "I used duct tape to fix the broken handle on my suitcase."]
 }
 
+# Verbes pour le thème pencase avec leur définition, leurs exemples et leur image
 pencase_verbs_data = {
     "store": {
         "definition": "To keep or accumulate supplies, such as pens and pencils, in a designated place.",
@@ -166,7 +176,7 @@ pencase_verbs_data = {
                      "It's convenient to store writing tools in a pencase."],
         "image_url": "https://thumbs.dreamstime.com/b/woman-sitting-floor-waste-moving-boxes-her-apartement-37051378.jpg"
     },
-    # Add more verbs in a similar format
+
     "write": {
         "definition": "To trace or form characters on the surface of some material, as with a pen or pencil.",
         "examples": ["She likes to write notes in her pencase.",
@@ -189,6 +199,7 @@ pencase_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème fruit
 fruit_examples = {
     "apple": ["An apple is a healthy snack.", "She packed an apple in her lunch for school."],
     "banana": ["Bananas are a great source of energy.", "I usually add sliced banana to my cereal in the morning."],
@@ -204,6 +215,7 @@ fruit_examples = {
     "watermelon" : ["A slice of watermelon is perfect on a hot summer day.", "We brought a watermelon to the picnic for everyone to share."]
 }
 
+# Verbes pour le thème fruit avec leur définition, leurs exemples et leur image
 fruit_verbs_data = {
     "juice": {
         "definition": "To extract liquid from fruits, often for drinking.",
@@ -211,7 +223,6 @@ fruit_verbs_data = {
                      "She juiced a combination of fruits for a nutritious beverage."],
         "image_url": "https://thekitchencommunity.org/wp-content/uploads/2021/12/shutterstock_1938737419-500x500.jpg"
     },
-    # Add more verbs in a similar format
     
     "squeeze": {
         "definition": "To apply pressure to extract juice from fruits, often by hand or using a tool.",
@@ -235,6 +246,7 @@ fruit_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème object
 object_examples = {
     "armchair": ["I like to relax in the armchair with a good book.", "The armchair in the living room is very comfortable."],
     "bed": ["I'm looking forward to a good night's sleep in my cozy bed.", "Can you make the bed with fresh sheets, please?"],
@@ -250,6 +262,7 @@ object_examples = {
     "wardrobe" : ["My clothes and shoes are in the wardrobe.", "I'm running out of space in the wardrobe."]
 }
 
+# Verbes pour le thème object avec leur définition, leurs exemples et leur image
 object_verbs_data = {
     
     "clean": {
@@ -258,7 +271,6 @@ object_verbs_data = {
                      "He cleaned the study room to create a more organized workspace."],
         "image_url": "https://www.shutterstock.com/image-vector/boy-cleaning-floor-mop-260nw-303025817.jpg"
     },
-    # Add more verbs in a similar format
     "sit": {
         "definition": "To rest the body on a chair or seat in a room.",
         "examples": ["She likes to sit on the comfortable sofa in the living room.",
@@ -281,6 +293,7 @@ object_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème pet
 pet_examples = {
     "canary": ["The canary chirped melodiously in its cage.", "I love the vibrant yellow color of canaries."],
     "cat": ["My cat loves eating fish.", "He drank a cup of coffee to wake up in the morning."],
@@ -296,6 +309,7 @@ pet_examples = {
     "turtle" : ["The turtle slowly made its way to the pond.", "Turtles are known for their long lifespan."]
 }
 
+# Verbes pour le thème pet avec leur définition, leurs exemples et leur image
 pet_verbs_data = {
     "pet": {
         "definition": "To stroke or caress an animal, often with affection.",
@@ -303,7 +317,7 @@ pet_verbs_data = {
                      "He petted the dog and gave it a treat."],
         "image_url": "https://merriam-webster.com/assets/ld/word_of_the_day/images/2771/large.jpg"
     },
-    # Add more verbs in a similar format
+
     "play": {
         "definition": "To engage in activities for enjoyment with a pet, involving toys or interaction.",
         "examples": ["They decided to play fetch with their dog in the backyard.",
@@ -326,6 +340,7 @@ pet_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème school
 school_examples = {
     "board": ["The teacher wrote the math problem on the board.", "We use a whiteboard to brainstorm ideas in meetings."],
     "book": ["I love to curl up with a good book on a rainy day.", "The library has an extensive collection of books."],
@@ -341,6 +356,7 @@ school_examples = {
     "teacher" : ["The teacher explained the lesson clearly.", "My favorite teacher is the one who teaches history."]
 }
 
+# Verbes pour le thème school avec leur définition, leurs exemples et leur image
 school_verbs_data = {
     
     "listen": {
@@ -349,7 +365,7 @@ school_verbs_data = {
                      "He listened carefully to the instructions given in school."],
         "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2nKlfhCMNGZGZfVLqxi1a37Ox420sK9j4r62Q3-VgptYrSxtuMrJKyEtUwQn1V8FnYhY&usqp=CAU"
     },
-    # Add more verbs in a similar format
+
     "read": {
         "definition": "To look at and comprehend written words, often in books or on paper.",
         "examples": ["Students read textbooks to understand the lesson.",
@@ -372,6 +388,7 @@ school_verbs_data = {
     },
 }
 
+# Exemples de phrase pour le thème summer
 summer_examples = {
     "ball": ["We played catch with a colorful ball at the park.", "The soccer ball was nowhere to be found."],
     "crab": ["I saw a crab on the beach.", "We caught crabs in a bucket at the seashore."],
@@ -387,6 +404,7 @@ summer_examples = {
     "umbrella" : ["I brought an umbrella in case it rains.", "The umbrella broke because of the storm."]
 }
 
+# Verbes pour le thème summer avec leur définition, leurs exemples et leur image
 summer_verbs_data = {
     "have": {
         "definition": "To possess or own something; to be in a specific state or condition.",
@@ -394,7 +412,7 @@ summer_verbs_data = {
                      "They have a new puppy as a pet."],
         "image_url": "https://i0.wp.com/www.flashcardsforkindergarten.com/wp-content/uploads/2021/09/have-verb-flashcard-725x1024.jpg?ssl=1"
     },
-    # Add more verbs in a similar format
+
     "be": {
         "definition": "To exist or have a specific quality or state of being.",
         "examples": ["She wants to be a doctor when she grows up.",
@@ -418,32 +436,47 @@ summer_verbs_data = {
 }
 
 def import_data(theme, url, examples_data, verbs_data):
+    # Récupération du contenu de la page web
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # Extraction des éléments de la page avec la classe 'boxBox'
     items = soup.find_all('div', class_='boxBox')
 
+    # Boucle sur chaque élément extrait
     for item in items:
+        # Récupération de la balise 'img' avec la classe 'imgBig'
         img_tag = item.find('img', class_='imgBig')
+        # Récupération de la balise 'ul' avec la classe 'kropkiBL-blue666'
         ul_tag = item.find('ul', class_='kropkiBL-blue666')
 
+        # Vérification de la présence des balises 'img' et 'ul'
         if img_tag and ul_tag:
+            # Construction de l'URL complet de l'image
             img_src = "https://www.anglomaniacy.pl/" + img_tag['src']
+            
+            # Extraction du texte du premier et du deuxième élément 'li' de 'ul' (mot et définition)
             word_text = ul_tag.find_all('li')[0].get_text(strip=True)
             definition_text = ul_tag.find_all('li')[1].get_text(strip=True)
+            
+            # Récupération de la liste des exemples ou utilisation de la valeur par défaut
             examples_list = examples_data.get(word_text, ["No example available."])
 
+            # Création ou récupération de l'objet Word dans la base de données
             word, created = Word.objects.get_or_create(
                 word=word_text,
                 defaults={
                     'definition': definition_text,
                     'example': ' '.join(examples_list),
                     'image_url': img_src,
-                    'category': 'noun',  
+                    'category': 'noun',
                     'theme': theme
                 }
             )
 
+    # Boucle sur les données des verbes
     for verb, data in verbs_data.items():
+        # Création ou récupération de l'objet Word dans la base de données
         word, created = Word.objects.get_or_create(
             word=verb,
             defaults={
@@ -455,6 +488,7 @@ def import_data(theme, url, examples_data, verbs_data):
             }
         )
 
+# Définition des différents thèmes avec leurs URLs et données associées
 themes = [
     {
         "theme": "colours",
@@ -512,7 +546,7 @@ themes = [
     }
 ]
 
-
+# Appel de la fonction import_data pour chaque thème
 for theme in themes:
     import_data(
         theme['theme'],
@@ -521,5 +555,6 @@ for theme in themes:
         theme['verbs_data']
     )
 
+# Affichage d'un message une fois l'importation des données terminée
 print("Data import completed!")
 
