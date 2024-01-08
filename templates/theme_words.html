@@ -4,23 +4,23 @@
 
 <style>
   body {
-    text-align: center; /* Center everything */
+    text-align: center; /* Centrer tout le contenu */
   }
 
   .word {
-    display: none; /* Initially hide all words */
-    margin: 20px auto; /* Add some space around each word */
-    width: 30%; /* Set a max-width for content and center it */
+    display: none; /* Initialement masquer tous les mots */
+    margin: 20px auto; /* Ajouter de l'espace autour de chaque mot */
+    width: 30%; /* Définir une largeur maximale pour le contenu et le centrer */
   }
 
   img {
-    max-width: 100%; /* Ensure images are not larger than their container */
-    height: auto; /* Maintain aspect ratio */
-    margin-top: 20px; /* Add some space above the image */
+    max-width: 100%; /* Assurer que les images ne sont pas plus grandes que leur conteneur */
+    height: auto; /* Maintenir le ratio hauteur-largeur */
+    margin-top: 20px; /* Ajouter de l'espace au-dessus de l'image */
   }
 
   .navigation {
-    margin-top: 20px; /* Add some space above the navigation */
+    margin-top: 20px; /* Ajouter de l'espace au-dessus de la navigation */
   }
 
   .navigation button {
@@ -34,47 +34,63 @@
   }
 
   .navigation button:hover {
-    background-color: #333; /* Slightly lighter black on hover */
+    background-color: #333; /* Légèrement plus clair au survol */
   }
 </style>
 
+<!-- Titre de la page basé sur la variable 'theme' -->
 <h1>{{ theme|capfirst }}</h1>
+
 {% for word in words %}
+  <!-- Div pour chaque mot -->
   <div class="word">
     <h2>{{ word.word }}</h2>
-    <p><strong>Définition:</strong> {{ word.definition }}</p>
-    <p><strong>Example:</strong> {{ word.example }}</p>
+    <p><strong>Définition :</strong> {{ word.definition }}</p>
+    <p><strong>Exemple :</strong> {{ word.example }}</p>
     {% if word.image_url %}
+      <!-- Afficher l'image si une URL est disponible -->
       <img src="{{ word.image_url }}" alt="{{ word.word }}">
     {% endif %}
   </div>
 {% endfor %}
 
+<!-- Zone de navigation avec des boutons "Précédent" et "Suivant" -->
 <div class="navigation">
-  <button onclick="previousWord()">Previous</button>
-  <button onclick="nextWord()">Next</button>
+  <button onclick="previousWord()">Précédent</button>
+  <button onclick="nextWord()">Suivant</button>
 </div>
 
 <script>
+  // Variable pour suivre l'index du mot actuel
   let currentWord = 0;
+  // Sélection de tous les éléments avec la classe 'word'
   const words = document.querySelectorAll('.word');
-  // Initially display the first word
+
+  // Afficher initialement le premier mot
   if(words.length > 0) {
     words[0].style.display = 'block';
   }
 
+  // Fonction pour passer au mot suivant
   function nextWord() {
     if (currentWord < words.length - 1) {
+      // Masquer le mot actuel
       words[currentWord].style.display = 'none';
+      // Passer au mot suivant
       currentWord++;
+      // Afficher le nouveau mot
       words[currentWord].style.display = 'block';
     }
   }
 
+  // Fonction pour revenir au mot précédent
   function previousWord() {
     if (currentWord > 0) {
+      // Masquer le mot actuel
       words[currentWord].style.display = 'none';
+      // Revenir au mot précédent
       currentWord--;
+      // Afficher le mot précédent
       words[currentWord].style.display = 'block';
     }
   }

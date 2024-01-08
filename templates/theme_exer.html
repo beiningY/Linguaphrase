@@ -1,9 +1,10 @@
 <!-- theme_exer.html -->
+
 {% extends 'base.html' %}
 
 {% block content %}
 <style>
-    /* Basic CSS for the exercise page */
+    /* CSS de base pour la page d'exercice */
     .container {
         width: 80%;
         margin: auto;
@@ -60,9 +61,9 @@
 </style>
 
 <div class="container">
-    <h1>Now, create sentences with the displayed words and verbs!</h1>
+    <h1>À présent, créez des phrases avec les mots et verbes affichés !</h1>
     <div class="left-panel">
-        <p>Conseil:Vous pouvez cliquer sur les indices pour voir les informations sur les mots, mais essayez de créer des phrases sans regarder les indices !</p>
+        <p>Conseil : Vous pouvez cliquer sur les indices pour voir les informations sur les mots, mais essayez de créer des phrases sans regarder les indices !</p>
     </div>
 
     <div class="right-panel">
@@ -70,14 +71,14 @@
         <span id="currentProgress">1</span>/<span id="totalProgress">5</span>
     </div>
 
-    <!-- Words section -->
+    <!-- Section des mots -->
     <div id="words">
         {% for word in selected_words %}
             <div class="word" id="word-{{ forloop.counter }}">
                 <strong>{{ word.word }}</strong>
                 <div class="help-options">
-                    <button onclick="showDefinition('word', {{ forloop.counter }})">Definition</button>
-                    <button onclick="showExample('word', {{ forloop.counter }})">Example</button>
+                    <button onclick="showDefinition('word', {{ forloop.counter }})">Définition</button>
+                    <button onclick="showExample('word', {{ forloop.counter }})">Exemple</button>
                     <button onclick="showImage('word', {{ forloop.counter }})">Image</button>
                 </div>
                 <p class="definition" style="display:none;">{{ word.definition }}</p>
@@ -87,14 +88,14 @@
         {% endfor %}
     </div>
 
-    <!-- Verbs section -->
+    <!-- Section des verbes -->
     <div id="verbs">
         {% for verb in selected_verbs %}
             <div class="verb" id="verb-{{ forloop.counter }}">
                 <strong>{{ verb.word }}</strong>
                 <div class="help-options">
-                    <button onclick="showDefinition('verb', {{ forloop.counter }})">Definition</button>
-                    <button onclick="showExample('verb', {{ forloop.counter }})">Example</button>
+                    <button onclick="showDefinition('verb', {{ forloop.counter }})">Définition</button>
+                    <button onclick="showExample('verb', {{ forloop.counter }})">Exemple</button>
                     <button onclick="showImage('verb', {{ forloop.counter }})">Image</button>
                 </div>
                 <p class="definition" style="display:none;">{{ verb.definition }}</p>
@@ -105,35 +106,42 @@
     </div>
 
     <div class="navigation">
-        <button onclick="showPrevious()">Previous</button>
-        <button onclick="showNext()">Next</button>
+        <button onclick="showPrevious()">Précédent</button>
+        <button onclick="showNext()">Suivant</button>
     </div>
 
     <div id="userInputSection">
-        <input type="text" id="userSentence" placeholder="Type your sentence here">
-        <button onclick="checkSentence()">Check</button>
+        <input type="text" id="userSentence" placeholder="Saisissez votre phrase ici">
+        <button onclick="checkSentence()">Vérifier</button>
     </div>
 
     <div id="feedback"></div>
 </div>
 
+<!-- Script JavaScript -->
 <script>
+    // Index actuel de l'exercice
     let currentIndex = 0;
+    // Sélection de tous les éléments avec la classe 'word' et 'verb'
     const words = document.querySelectorAll('.word');
     const verbs = document.querySelectorAll('.verb');
-    let totalExercises = Math.min(words.length, verbs.length, 5); 
+    // Calcul du nombre total d'exercices (le minimum entre le nombre de mots et de verbes, limité à 5)
+    let totalExercises = Math.min(words.length, verbs.length, 5);
 
+    // Fonction pour mettre à jour l'indicateur de progression
     function updateProgressIndicator() {
         document.getElementById('currentProgress').textContent = currentIndex + 1;
         document.getElementById('totalProgress').textContent = totalExercises;
     }
 
+    // Fonction pour basculer l'affichage d'un élément à un index spécifié
     function toggleDisplay(index, show) {
         const displayValue = show ? 'block' : 'none';
         if (index < words.length) words[index].style.display = displayValue;
         if (index < verbs.length) verbs[index].style.display = displayValue;
     }
 
+    // Fonction pour afficher l'exercice suivant
     function showNext() {
         if (currentIndex < totalExercises - 1) {
             toggleDisplay(currentIndex, false);
@@ -141,11 +149,13 @@
             toggleDisplay(currentIndex, true);
             updateProgressIndicator();
         }
+        // Masquer le bouton "Suivant" à la fin des exercices
         if (currentIndex === totalExercises - 1) {
             document.querySelector(".navigation button:nth-child(2)").style.display = 'none'; 
         }
     }
 
+    // Fonction pour afficher l'exercice précédent
     function showPrevious() {
         if (currentIndex > 0) {
             toggleDisplay(currentIndex, false);
@@ -153,26 +163,31 @@
             toggleDisplay(currentIndex, true);
             updateProgressIndicator();
         }
+        // Afficher le bouton "Suivant" lorsque l'utilisateur revient en arrière
         if (currentIndex < totalExercises - 1) {
             document.querySelector(".navigation button:nth-child(2)").style.display = 'inline-block'; 
         }
     }
 
+    // Fonction pour afficher la définition d'un mot ou verbe
     function showDefinition(type, index) {
         hideAllInfo(type, index);
         document.querySelector(`#${type}-${index} .definition`).style.display = 'block';
     }
 
+    // Fonction pour afficher un exemple d'utilisation d'un mot ou verbe
     function showExample(type, index) {
         hideAllInfo(type, index);
         document.querySelector(`#${type}-${index} .example`).style.display = 'block';
     }
 
+    // Fonction pour afficher une image associée à un mot ou verbe
     function showImage(type, index) {
         hideAllInfo(type, index);
         document.querySelector(`#${type}-${index} .image`).style.display = 'block';
     }
 
+    // Fonction pour masquer toutes les informations d'un mot ou verbe
     function hideAllInfo(type, index) {
         let infoDiv = document.querySelector(`#${type}-${index}`);
         infoDiv.querySelector('.definition').style.display = 'none';
@@ -180,60 +195,70 @@
         infoDiv.querySelector('.image').style.display = 'none';
     }
 
+    // Fonction pour obtenir le texte des éléments correspondant à un sélecteur donné
     function getWordsText(selector) {
-    return Array.from(document.querySelectorAll(selector))
-        .map(elem => elem.innerText.trim()); 
-}
+        return Array.from(document.querySelectorAll(selector))
+            .map(elem => elem.innerText.trim());
+    }
 
-function checkSentence() {
-    var sentence = document.getElementById('userSentence').value;
-    var csrftoken = getCookie('csrftoken'); 
+    // Fonction pour vérifier la phrase de l'utilisateur
+    function checkSentence() {
+        // Récupération de la phrase de l'utilisateur
+        var sentence = document.getElementById('userSentence').value;
+        // Récupération du jeton CSRF à partir des cookies
+        var csrftoken = getCookie('csrftoken');
 
-    var selectedWords = getWordsText(`#word-${currentIndex + 1} strong`); 
-    var selectedVerbs = getWordsText(`#verb-${currentIndex + 1} strong`); 
+        // Récupération des mots et verbes sélectionnés pour l'exercice en cours
+        var selectedWords = getWordsText(`#word-${currentIndex + 1} strong`);
+        var selectedVerbs = getWordsText(`#verb-${currentIndex + 1} strong`);
 
-    var formData = new URLSearchParams();
-    formData.append("sentence", sentence);
+        // Création des données à envoyer dans la requête
+        var formData = new URLSearchParams();
+        formData.append("sentence", sentence);
 
-    selectedWords.forEach(word => formData.append("nouns[]", word));
-    selectedVerbs.forEach(verb => formData.append("verbs[]", verb));
+        selectedWords.forEach(word => formData.append("nouns[]", word));
+        selectedVerbs.forEach(verb => formData.append("verbs[]", verb));
 
-    console.log("Selected nouns:", selectedWords);
-    console.log("Selected verbs:", selectedVerbs);
+        // Affichage des mots et verbes sélectionnés dans la console
+        console.log("Noms sélectionnés:", selectedWords);
+        console.log("Verbes sélectionnés:", selectedVerbs);
 
-    fetch("/check_sentence/", {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "X-CSRFToken": csrftoken
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Received data:", data);
-        var feedbackElement = document.getElementById('feedback');
-        feedbackElement.innerHTML = ''; 
+        // Envoi de la requête POST au serveur
+        fetch("/check_sentence/", {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-CSRFToken": csrftoken
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Données reçues:", data);
+            var feedbackElement = document.getElementById('feedback');
+            feedbackElement.innerHTML = ''; 
 
-        if(data.message) {
-            feedbackElement.innerHTML = '<p>' + data.message + '</p>';
-        } else if(data.suggestions) {
-            data.suggestions.forEach(function(suggestion) {
-                feedbackElement.innerHTML += '<p>' + suggestion + '</p>';
-            });
-        } else if(data.error) {
-            feedbackElement.innerHTML = '<p>' + data.error + '</p>';
-        } else {
-            feedbackElement.innerHTML = '<p>Unexpected response from the server.</p>';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        var feedbackElement = document.getElementById('feedback');
-        feedbackElement.innerHTML = '<p>An error occurred while processing your sentence.</p>'; // 显示错误信息
-    });
-}
+            // Traitement de la réponse du serveur
+            if(data.message) {
+                feedbackElement.innerHTML = '<p>' + data.message + '</p>';
+            } else if(data.suggestions) {
+                data.suggestions.forEach(function(suggestion) {
+                    feedbackElement.innerHTML += '<p>' + suggestion + '</p>';
+                });
+            } else if(data.error) {
+                feedbackElement.innerHTML = '<p>' + data.error + '</p>';
+            } else {
+                feedbackElement.innerHTML = '<p>Réponse inattendue du serveur.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            var feedbackElement = document.getElementById('feedback');
+            feedbackElement.innerHTML = '<p>Une erreur s\'est produite lors du traitement de votre phrase.</p>';
+        });
+    }
 
+    // Fonction pour obtenir la valeur d'un cookie à partir de son nom
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -249,11 +274,14 @@ function checkSentence() {
         return cookieValue;
     }
 
+    // Vérification s'il y a des mots et verbes à afficher
     if(words.length > 0 && verbs.length > 0) {
+        // Affichage du premier exercice
         toggleDisplay(0, true); 
+        // Mise à jour de l'indicateur de progression
         updateProgressIndicator();
     }
-
 </script>
+<!-- Fin du script JavaScript -->
 
 {% endblock %}

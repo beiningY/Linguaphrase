@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<!-- Style pour la mise en forme des modules de cours -->
 <style>
   .course-modules {
     display: flex;
@@ -9,6 +10,7 @@
     justify-content: space-around;
   }
 
+  /* Style pour chaque bloc de thème de construction de phrases */
   .theme-block {
     background-color: black;
     color: white;
@@ -22,15 +24,21 @@
     transition: background-color 0.3s;
   }
 
+  /* Style pour l'effet de survol des blocs de thème */
   .theme-block:hover {
     background-color: #333; 
   }
 </style>
 
+<!-- Titre de la page Construction de Phrases -->
 <h1>Construction de Phrases</h1>
+
+<!-- Conteneur des modules de construction de phrases -->
 <div class="course-modules">
   {% for theme in themes %}
+    <!-- Lien pour chaque bloc de thème de construction de phrases -->
     <a class="theme-block" href="{% url 'theme_exer' theme %}">{{ theme|title }}</a>
   {% endfor %}
 </div>
+
 {% endblock %}

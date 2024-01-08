@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,10 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinguaPhrase</title>
+    
+    <!-- Inclusion de la feuille de style Bootstrap depuis les fichiers statiques -->
     <link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap.min.css' %}">
 </head>
 <body>
 
+    <!-- Barre de navigation Bootstrap -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">LinguaPhrase</a>
@@ -24,17 +28,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/exercise/">Exercise</a>
                     </li>
-                        </div>                        
-                    </li>
+                    </div>                        
                 </ul>
             </div>
         </div>
     </nav>
     
-    
+    <!-- Contenu principal de la page -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    
+    <!-- Bloc pour inclure des scripts JavaScript spécifiques -->
     {% block javascript %}{% endblock %}
 </body>
 </html>
+
